@@ -1,0 +1,20 @@
+var fs = require('fs')
+var countNL = undefined
+var fileArray
+
+function findNL(callback) {
+	fs.readFile(process.argv[2], function doneReading(err, fileContents) {
+		if (err)
+			return console.log(err)
+		fileArray = fileContents.toString().split('\n')
+		callback()
+	})
+}
+
+function printCount() {
+	if (fileArray.length > 0)
+		countNL = fileArray.length - 1
+	console.log(countNL)
+}
+
+findNL(printCount)
