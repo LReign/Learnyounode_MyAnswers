@@ -1,0 +1,30 @@
+var fs = require('fs')
+var path = require('path')
+
+var ext = '.' + process.argv[3]
+var extList = ""
+
+function findDir(callback) {
+	fs.readdir(process.argv[2], function(err, list) {
+		if (err)
+			return console.log(err)
+
+		for (i = 0; i < list.length; i++) {
+			if (path.extname(list[i]).endsWith(ext)) {
+				extList += list[i] + '\n'
+			}
+		}
+		callback()
+	})
+}
+
+function printExtList() {
+	if (extList.length > 0) {
+		//remove last newline
+		extList.trim()
+	}
+	console.log(extList)
+}
+
+
+findDir(printExtList)
