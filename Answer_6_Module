@@ -1,0 +1,25 @@
+var fs = require('fs')
+var path = require('path')
+
+var dir = ""
+var ext = '.'
+var extList = []
+
+module.exports = function findDir(dirPath, filter, callback) {
+	dir = dirPath
+
+	fs.readdir(dir, function(err, list) {
+		if (err)
+			return callback(err)
+
+		ext += filter
+
+		for (i = 0; i < list.length; i++) {
+			if (path.extname(list[i]).endsWith(ext)) {
+				extList.push(list[i])
+			}
+		}
+		
+		callback(null, extList)
+	})
+}
