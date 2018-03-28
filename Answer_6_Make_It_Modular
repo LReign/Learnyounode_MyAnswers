@@ -1,0 +1,16 @@
+var path = require('path')
+
+var mymodule = require('./mymodule.js')
+
+
+function printExtList(err, data) {
+	if (err == null) {
+		for (i = 0; i < data.length; i++)
+			console.log(data[i])
+	}
+	else {
+		console.log(err)
+	}
+}
+
+mymodule(process.argv[2], process.argv[3], printExtList)
