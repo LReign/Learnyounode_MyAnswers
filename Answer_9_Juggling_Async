@@ -1,0 +1,37 @@
+var http = require('http')
+var bl = require('bl')
+
+var content = [];
+var count = 0;
+
+function readStream(callback, orderNum) {
+		http.get(process.argv[orderNum], function (response) {
+
+			response.pipe(bl(function(err, data) {
+				if (err != null) {
+					return console.error(err.toString());
+				}			
+				var arrayNum = orderNum - 2;
+				content[arrayNum] = data.toString();
+				count++;
+
+				if (count == 3) {
+					printData();
+				}
+			}))
+		})
+}
+
+function printData() {
+		for (i = 0; i < content.length; i++) {
+			console.log(content[i]);
+		}
+}
+
+function queueHelp() {
+	for (i = 2; i < process.argv.length; i++) {
+		readStream(printData, i);
+	}
+}
+
+queueHelp();
