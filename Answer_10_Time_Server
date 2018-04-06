@@ -1,0 +1,57 @@
+var net = require('net');
+
+var date = new Date();
+var returnDate = "";
+
+var server = net.createServer(function listener(socket) {
+	createDate();
+	socket.write(returnDate);
+	socket.end();
+});
+
+function createDate() {
+	createYear();
+	createMonth();
+	createDay();
+	createHours();
+	createMinutes();
+}
+
+function createYear() {
+	//add - after year
+	returnDate += date.getFullYear() + "-";
+}
+
+function createMonth() {
+	//Months start at 0, also catch for months less than 10, add - after
+	if (date.getMonth() < 9)
+		returnDate += "0" + (date.getMonth() + 1) + "-";
+	else
+		returnDate += (date.getMonth() + 1) + "-";
+}
+
+function createDay() {
+	//Catch for days less than 10, add space
+	if (date.getDate() < 10)
+		returnDate += "0" + date.getDate() + " ";
+	else
+		returnDate += date.getDate() + " ";
+}
+
+function createHours() {
+	//Catch for Hours less than 10, add colon
+	if (date.getHours() < 10)
+		returnDate += "0" + date.getHours() + ":";
+	else
+		returnDate += date.getHours() + ":";
+}
+
+function createMinutes() {
+	//Catch for Minutes less than 10, add newline
+	if (date.getMinutes() < 10)
+		returnDate += "0" + date.getMinutes() + '\n';
+	else
+		returnDate += date.getMinutes() + '\n';
+}
+
+server.listen(process.argv[2]);
