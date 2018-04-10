@@ -11,16 +11,16 @@ var server = http.createServer(function callback (request, response) {
 		return response.end('send a GET request\n');
 	}
 	else {
-		receivedJSON = JSON.stringify(url.parse(request.url, true));
+		receivedJSON = url.parse(request.url, true);
 		
-		if (receivedJSON.includes("/api/parsetime?iso=")) {
-			var date = new Date();
+		if (/^\/api\/parsetime/.test(request.url)) {
+			var date = new Date(receivedJSON.query.iso);
 			//var date = new Date(receivedJSON.query.iso);
 			var returnArray = {"hour" : date.getHours(), "minute" : date.getMinutes(), "second" : date.getSeconds()};
 			response.end(JSON.stringify(returnArray));
 		}
-		if(receivedJSON.includes("/api/unixtime")) {
-			var date = new Date();
+		if(/^\/api\/unixtime/.test(request.url)) {
+			var date = new Date(receivedJSON.query.iso);
 			//var date = new Date(receivedJSON.query.iso);
 			var returnArray = {"unixtime" : date.getTime()};	
 			response.end(JSON.stringify(returnArray));
